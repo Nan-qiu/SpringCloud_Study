@@ -1,0 +1,36 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: star-order
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/star?characterEncoding=UTF-8&serverTimezone=UTC
+    username: neo
+    password: IAMneo
+    type: com.alibaba.druid.pool.DruidDataSource
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+star-product:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    ReadTimeout: 5000   #Feign调用的超时时间，Feign底层使用了ribbon来完成负载均衡
+
+#定义Feign的日志
+feign:
+  client:
+    config:
+      star-product:         #服务提供者的名字
+        logger-level: FULL  #NONE BASIC HEADERS FULL
+logging:
+  level:
+    com.syrila.service.ProductService: debug
