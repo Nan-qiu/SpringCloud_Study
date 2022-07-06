@@ -1,7 +1,0 @@
-server:
-  port: 8761
-
-eureka:
-  client:
-    register-with-eureka: false   #启动时不要通过Eureka服务进行注册，因为当前微服务本身就是Eureka
-    fetch-registry: false         #不要在本地缓存注册表信息

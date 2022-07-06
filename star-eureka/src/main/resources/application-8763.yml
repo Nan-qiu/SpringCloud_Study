@@ -1,0 +1,15 @@
+server:
+  port: 8763
+
+eureka:
+  instance:
+    hostname: eureka8763
+  client:
+    register-with-eureka: false   #启动时不要通过Eureka服务进行注册，因为当前微服务本身就是Eureka
+    fetch-registry: false         #不要在本地缓存注册表信息
+    service-url:
+      defaultZone: http://eureka8761:8761/eureka,http://eureka8762:8762/eureka
+
+  server:
+    wait-time-in-ms-when-sync-empty: 5  #等待Eureka集群中对等节点的服务注册信息的时常，这里设置为5ms，能加快Eureka服务启动和显示注册服务的时机
+    enable-self-preservation: false  #是否开启自我保护机制

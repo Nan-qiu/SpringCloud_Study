@@ -1,0 +1,49 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: star-zuul
+  redis:
+    host: 101.35.163.229
+    port: 6379
+    password: IAMneo
+    database: 0
+
+zuul:                               #这个配置可以不写，默认用微服务的名字当作请求路径
+  routes:
+    star-product:                  #路由id，自定义
+      path: /star-product/**        #url映射路径，可以自定义，支持通配符：* ** ?
+      #url: http://localhost:8081/   #要跳转的目标地址
+      url: star-product             #在与Eureka集成后，直接去Eureka找当前微服务的名字，如果与path相同，可以不写
+    star-order:
+      path: /star-order/**
+      url: star-order
+  #ignored-patterns: /**/products/1    #排除URL包含products/1 结尾的请求
+  #ignored-services: star-order     #服务名排除，多个服务用逗号隔开
+  #prefix: /api                     #通过网关访问微服务时，必须加上指定的路由前缀
+  ratelimit:                    #网关限流配置
+    enabled: true
+    repository: REDIS
+    policy-list:
+      star-product:
+        - limit: 1
+          refresh-interval: 10  #QPS 10s内允许请求1次
+          type:
+            - origin            #针对ip限流
+    #default-policy-list:       #全局限流
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka,http://localhost:8763/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream   #zuul网关的hystrix配置

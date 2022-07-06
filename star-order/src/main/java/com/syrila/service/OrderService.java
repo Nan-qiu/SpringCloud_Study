@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OrderService extends IService<Order> {
     Order create(Integer pid,Integer number);
+
+    Order findOrderById(Integer oid);
+
 }

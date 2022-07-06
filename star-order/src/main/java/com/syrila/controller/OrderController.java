@@ -1,15 +1,13 @@
 package com.syrila.controller;
 
 import com.syrila.entity.Order;
+import com.syrila.entity.Product;
 import com.syrila.mapper.OrderMapper;
 import com.syrila.service.OrderService;
 import com.syrila.service.ProductService;
 import com.syrila.utils.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -46,6 +44,24 @@ public class OrderController {
 //        System.out.println("uri = " + uri);
 //        return restTemplate.getForObject( "http://star-product/products/1", ResultVO.class);
         return productService.find(1);
+    }
+
+
+    @GetMapping("/orders/testObjectParam")
+    public ResultVO testObjectParam(){
+        Product product = new Product();
+        product.setPid(3);
+        product.setPname("猕猴桃");
+        product.setPrice(20d);
+        product.setStock(10);
+        return productService.testObjectParam(product);
+    }
+
+
+    @GetMapping("/orders/find/{oid}")
+    public ResultVO findOrderById(@PathVariable Integer oid){
+        Order order = orderService.findOrderById(oid);
+        return ResultVO.success("查询成功！",order);
     }
 
 

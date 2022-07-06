@@ -7,23 +7,23 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/star?characterEncoding=UTF-8&serverTimezone=UTC
-    username: neo
-    password: IAMneo
+    username: root
+    #password: IAMneo
     type: com.alibaba.druid.pool.DruidDataSource
 
 eureka:
   instance:
     prefer-ip-address: true
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: true  #
+    fetch-registry: true        #可以在启动类上加 @EnableDiscoveryClient，就不需要写这两个了
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka,http://localhost:8763/eureka
 
 star-product:
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
-    ReadTimeout: 5000   #Feign调用的超时时间，Feign底层使用了ribbon来完成负载均衡
+    ReadTimeout: 5000   #Feign调用的超时时间，Feign底层使用了ribbon来完成负载均衡,超过5秒就报错
 
 #定义Feign的日志
 feign:
@@ -31,6 +31,11 @@ feign:
     config:
       star-product:         #服务提供者的名字
         logger-level: FULL  #NONE BASIC HEADERS FULL
+  hystrix:
+    enabled: true
+
+
 logging:
   level:
     com.syrila.service.ProductService: debug
+

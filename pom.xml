@@ -14,6 +14,8 @@
         <module>star-order</module>
         <module>star-auth</module>
         <module>star-eureka</module>
+        <module>star-hystrix</module>
+        <module>star-zuul</module>
     </modules>
 
     <properties>
